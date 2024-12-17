@@ -1,23 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface BoardItem {
+interface BoardInstance {
   id: string;
-  name: string;
 }
 
-interface BoardState {
-  value: BoardItem ,
+interface BoardDisplayProcessingUnit{
+  value: BoardInstance[],
 };
 
-const initialState: BoardState = {
-  value: {id:'none', name:'none'}, // Initialize as null or a default object
+const initialState: BoardDisplayProcessingUnit = {
+  value: [{id:''}], // Initialize as null or a default object
 }; 
 
 const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-      boardUpdate: (state, action: PayloadAction<BoardItem>) => {
+      boardUpdate: (state, action: PayloadAction<any>) => {
       state.value = action.payload; // Update the state with the new object
     },
   },

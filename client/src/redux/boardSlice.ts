@@ -2,26 +2,30 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface BoardInstance {
   id: string;
+  flip: boolean;
 }
 
-interface BoardDisplayProcessingUnit{
-  value: BoardInstance[],
+interface BoardState {
+  value: BoardInstance[];
+}
+
+const initialState: BoardState = {
+  value: [{ id: "board1", flip: false }],
 };
 
-const initialState: BoardDisplayProcessingUnit = {
-  value: [{id:''}], // Initialize as null or a default object
-}; 
 
 const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-      boardUpdate: (state, action: PayloadAction<any>) => {
-      state.value = action.payload; // Update the state with the new object
+    boardFlip: (state, action: PayloadAction<{ id: string; flip: boolean }>) => {
+      const board = state.value.find((b) => b.id === action.payload.id);
+      if (board) {
+        board.flip = action.payload.flip;
+      }
     },
   },
 });
 
-// Export actions and reducer
-export const { boardUpdate} = boardSlice.actions;
+export const { boardFlip } = boardSlice.actions;
 export default boardSlice.reducer;

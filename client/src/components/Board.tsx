@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { boardFlip } from "../redux/boardSlice";
+import { boardFlip, move } from "../redux/boardSlice";
 import { RootState } from "../redux/store";
 import { useEffect, useState } from "react";
 import { loadPieces } from "../chessBoard/chessBoard";
@@ -18,13 +18,36 @@ function Board() {
   
   useEffect(() => {loadPieces(position, flip)},[flip])
 
-  const [pick, setPick] = useState('');
-  const handlePick = (thesquare:[string, string]) => {
-    setPick(`${thesquare}`)
+  const [pick, setPick] = useState<[string, string | null] | null>(null);
+const [drop, setDrop] = useState<[string, string | null] | null>(null);
+
+const handlePick = (thesquare: [string, string | null]) => {
+  if (pick === null) {
+    setPick(thesquare);
+  } else {
+      if(thesquare[0] !== pick[0]) {
+      setDrop(thesquare);
+    }
+  } 
+};
+
+useEffect(() => {
+  if (pick) {
+    console.log(`pick from: ${pick}`);
   }
-  useEffect(()=>{ console.log(`pick from: ${pick}`)
-    },[pick]
-  )
+}, [pick]);
+
+useEffect(() => {
+  if (drop) {
+    console.log(`drop to: ${drop}`);
+    setPick(null); // Reset pick after dropping
+  }
+  dispatch(move({ piece: pick ? pick[1] : '', to: drop ? drop[0] : '' }))
+}, [drop]);
+
+useEffect(()=>{
+  loadPieces(position, flip)
+},[position])
 
 
   return (

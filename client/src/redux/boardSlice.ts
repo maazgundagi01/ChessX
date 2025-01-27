@@ -75,7 +75,7 @@ const initialState: BoardState = {
         { name: 'b3', piece: null, tag:''  },
         { name: 'c3', piece: null, tag:''  },
         { name: 'd3', piece: null, tag:''  },
-        { name: 'd3', piece: null, tag:''  },
+        { name: 'e3', piece: null, tag:''  },
         { name: 'f3', piece: null, tag:''  },
         { name: 'g3', piece: null, tag:''  },
         { name: 'h3', piece: null, tag:''  }
@@ -115,11 +115,32 @@ const boardSlice = createSlice({
         board.flip = action.payload.flip;
       }
     },
-    move: (state, action: PayloadAction<{ piece: string; to: string }>) => {
-      console.log(state, action )
-    },
+    move: (state, action: PayloadAction<{ piece: string | null; to: string | null }>) => {
+  const { piece, to } = action.payload;
+
+  if (piece && to) {
+    // Loop through the board to find the piece
+    for (let i = 0; i < state.value.length; i++) {
+      const position = state.value[i].position;
+      for (let rank of position) {
+        const pieceIndex = rank.findIndex((square) => square.piece === piece);
+        if (pieceIndex !== -1) {
+          // Find target square
+          const targetSquare = position.flat().find((square) => square.name === to);
+          if (targetSquare && !targetSquare.piece) {
+            // Move the piece
+            targetSquare.piece = piece;
+            rank[pieceIndex].piece = null;
+            return; // Exit after moving
+          }
+        }
+      }
+    }
+  }
+},
+
   },
 });
 
-export const { boardFlip } = boardSlice.actions;
+export const { boardFlip, move } = boardSlice.actions;
 export default boardSlice.reducer;

@@ -22,7 +22,7 @@ function Board() {
   const handlePick = (thesquare:[string, string]) => {
     setPick(`${thesquare}`)
   }
-  useEffect(()=>{ console.log(pick)
+  useEffect(()=>{ console.log(`pick from: ${pick}`)
     },[pick]
   )
 

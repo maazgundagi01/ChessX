@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface ChessMenType {
   name: string;
   piece:string | null;
-  tag:string | null
+  tag:string | null;
 }
 interface BoardInstance {
   id: string;

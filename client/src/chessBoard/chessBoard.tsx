@@ -5,7 +5,13 @@ interface ChessMenType {
   piece:string | null;
   tag: string | null;
 }
+function chessBoard() {
+  return (
+    <div>chessBoard</div>
+  )
+}
 
+export default chessBoard
 export const loadPieces = (position: ChessMenType[][], flip: Boolean): void => {
   position.forEach((rank) => {
     rank.forEach((square) => {
